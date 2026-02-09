@@ -24,6 +24,33 @@ Try it locally (PowerShell):
 # Start a small local HTTP server (Python 3 required):
 python -m http.server 8000; # then open http://localhost:8000/index.html in your browser
 
+Pelican / GitHub Pages
+---------------------
+
+This repository includes a minimal Pelican setup and a GitHub Actions workflow to build and deploy the generated static site to GitHub Pages.
+
+Quick start
+
+- Edit `publishconf.py` and set `SITEURL` to your GitHub Pages URL, e.g. `https://<USERNAME>.github.io/<REPO>`.
+- Push to the `main` branch — the workflow `.github/workflows/pelican.yml` will build the site and publish the `output/` folder to the `gh-pages` branch using `peaceiris/actions-gh-pages`.
+
+Build locally
+
+```powershell
+Set-Location -LiteralPath 'c:\Users\User\DS 3d printing site'
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+python -m pip install --upgrade pip
+pip install -r requirements.txt
+pelican content -o output -s publishconf.py
+# Serve the generated output for preview
+python -m http.server --directory output 8001
+```
+
+Notes
+- The workflow uses the repository `GITHUB_TOKEN` to push the built site. The deploy action will create/update the `gh-pages` branch automatically.
+- If you prefer a different deploy flow (e.g. pushing to a `docs/` folder on `main`), I can change the workflow accordingly.
+
 Notes
 - If your actual screenshot has a different pixel aspect ratio, update the SVG viewBox and <image> width/height to match your image's aspect and size to make placement exact.
 - I intentionally used a simple viewBox so coordinates are small and easy to edit; adapt the numbers to your image pixel size if desired.
